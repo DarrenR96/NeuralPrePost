@@ -1,5 +1,6 @@
-import torch 
+import torch
 import torch.nn as nn
+
 
 class Conv2d(nn.Module):
     """2D convolution layer with optional depthwise separable convolution.
@@ -14,7 +15,16 @@ class Conv2d(nn.Module):
         separable: If True, uses depthwise separable convolution.
     """
 
-    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias, separable):
+    def __init__(
+        self,
+        in_channels: int,
+        out_channels: int,
+        kernel_size: int,
+        stride: int,
+        padding: int,
+        bias: bool,
+        separable: bool,
+    ) -> None:
         super().__init__()
         if separable:
             self.depthwise = nn.Conv2d(
@@ -31,6 +41,7 @@ class Conv2d(nn.Module):
                 in_channels, out_channels, kernel_size=kernel_size,
                 stride=stride, padding=padding, bias=bias, padding_mode='replicate')
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Apply convolution to the input tensor."""
         x = self.conv_layer(x)
         return x

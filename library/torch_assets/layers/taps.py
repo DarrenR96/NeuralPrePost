@@ -1,8 +1,16 @@
-import torch 
-import torch.nn as nn 
+import torch
+import torch.nn as nn
+
 
 class TapLayer(nn.Module):
-    def __init__(self, in_dim, dense_dims, final_act='tanh'):
+    """MLP tap: linear layers with GELU, optional final activation (e.g. tanh)."""
+
+    def __init__(
+        self,
+        in_dim: int,
+        dense_dims: list[int],
+        final_act: str = "tanh",
+    ) -> None:
         super().__init__()
         self.dense_layers = []
         self.dense_layers.extend(
@@ -20,7 +28,7 @@ class TapLayer(nn.Module):
                     self.dense_layers.append(
                         nn.Tanh()
                     )
-                else:
+                elif final_act == 'GELU':
                     self.dense_layers.append(
                         nn.GELU()
                     )
@@ -30,6 +38,7 @@ class TapLayer(nn.Module):
                 )
         self.dense_layers = nn.Sequential(*self.dense_layers)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Map input vector through the MLP."""
         x = self.dense_layers(x)
-        return x 
+        return x

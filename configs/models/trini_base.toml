@@ -1,0 +1,22 @@
+[encoder_args]
+in_dim = 1
+num_blocks = 3 
+stage_dims = [96, 192, 384, 768]
+
+[tap_enc_args]
+in_dim = 768
+dense_dims = [768, 768]
+final_act = 'tanh'
+
+[tap_dec_args]
+in_dim = 768
+dense_dims = [768, 768]
+final_act = 'GELU'
+
+[post_processor_args]
+in_dims = 1
+encode_channels = 6
+downsample_amts = 3
+bottleneck_dims = 384
+num_bottleneck_blocks = 4
+enc_feature_dims = 768
