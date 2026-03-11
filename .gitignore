@@ -114,3 +114,6 @@ Desktop.ini
 
 # Local config (uncomment if you use)
 # .env
+
+# Model Training
+results/
