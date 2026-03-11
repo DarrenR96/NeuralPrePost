@@ -38,6 +38,6 @@ class VideoDataset(Dataset):
 def fetch_video_dataloaders(data_path: str, batch_size, qps: List[int] = [0, 6, 11, 17, 23, 28, 40, 45, 51]):
     train_dataset = VideoDataset(data_path, 'train', qps)
     test_dataset = VideoDataset(data_path, 'test', qps)
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=8, pin_memory=True)
+    test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers=8, pin_memory=True)
     return train_dataloader, test_dataloader

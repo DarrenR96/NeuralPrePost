@@ -57,7 +57,7 @@ for epoch in range(EPOCHS):
         optimizer.step()
         loss_val = loss.item()
         train_losses.append(loss_val)
-        pbar.set_postfix(loss=f'{loss_val:.4f}', avg_loss=f'{sum(train_losses) / len(train_losses):.4f}')
+        pbar.set_postfix(loss=f'{loss_val:.6f}', avg_loss=f'{sum(train_losses) / len(train_losses):.6f}')
 
     avg_train_loss = sum(train_losses) / len(train_losses)
     writer.add_scalar('loss/train', avg_train_loss, epoch)
