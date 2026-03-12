@@ -7,13 +7,15 @@ import torch
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 
-EXPERIMENT_TAG = 'trini_base'
-BATCH_SIZE = 32
-LR_START = 1e-3
+EXPERIMENT_TAG = 'trini_base_QP51'
+BATCH_SIZE = 64
+LR_START = 5e-4
 LR_END = 1e-6
 EPOCHS = 1000
 LOSS = 'MSE'
 DATA_PATH = '/storage/8TB-SSD-1/DATASET'
+QPS = [51]
+PATCH_SIZE = 64
 MODEL_CONFIG = 'configs/models/trini_base.toml'
 DEVICE = 'cuda'
 
@@ -25,7 +27,7 @@ if __name__ == '__main__':
         os.makedirs(_path, exist_ok=True)
     shutil.copyfile(MODEL_CONFIG, os.path.join(results_folder, os.path.basename(MODEL_CONFIG)))
 
-    train_dataloader, test_dataloader = fetch_video_dataloaders(DATA_PATH, BATCH_SIZE)
+    train_dataloader, test_dataloader = fetch_video_dataloaders(DATA_PATH, BATCH_SIZE, QPS, PATCH_SIZE)
 
     if LOSS == 'MSE':
         criterion = nn.MSELoss()
