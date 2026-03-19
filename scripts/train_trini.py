@@ -7,7 +7,7 @@ import torch
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 
-EXPERIMENT_TAG = 'trini_base_QP51'
+EXPERIMENT_TAG = 'trini_base_allQPs'
 BATCH_SIZE = 64
 LR_START = 5e-4
 LR_END = 1e-6

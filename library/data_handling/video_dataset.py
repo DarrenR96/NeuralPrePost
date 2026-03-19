@@ -5,6 +5,7 @@ import os
 from typing import List
 import numpy as np 
 import random
+from tqdm import tqdm 
 
 class VideoDataset(Dataset):
     def __init__(self, data_path: str, tag: str, qps: List[int], patch_size: int = 256):
@@ -16,13 +17,16 @@ class VideoDataset(Dataset):
         self.data_df = self.data_df[self.data_df['tag'] == self.tag]
         self.data_df = self.data_df[self.data_df['qp'].isin(self.qps)]
         self.data_df = self.data_df.reset_index(drop=True)
+        self.data_collection = []
+        for _row in tqdm(self.data_df.to_dict('records'), leave=False):
+            _npy_data = np.load(os.path.join(self.data_path, 'numpy_data', _row['file']))
+            self.data_collection.append({'reference_y': _npy_data['reference_y'], 'compressed_y': _npy_data['compressed_y']})
 
     def __len__(self):
-        return self.data_df.shape[0]
+        return len(self.data_collection)
 
     def __getitem__(self, index):
-        row_data = self.data_df.iloc[index]
-        npy_data = np.load(os.path.join(self.data_path, 'numpy_data', row_data['file']))
+        npy_data = self.data_collection[index]
         reference_y = npy_data['reference_y']
         compressed_y = npy_data['compressed_y']
 

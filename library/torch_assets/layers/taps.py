@@ -1,44 +1,44 @@
 import torch
 import torch.nn as nn
-
+from .conv2d import Conv2d
 
 class TapLayer(nn.Module):
-    """MLP tap: linear layers with GELU, optional final activation (e.g. tanh)."""
+    """Tap: linear layers with GELU, optional final activation (e.g. tanh)."""
 
     def __init__(
         self,
         in_dim: int,
-        dense_dims: list[int],
+        cnn_dims: list[int],
         final_act: str = "tanh",
     ) -> None:
         super().__init__()
-        self.dense_layers = []
-        self.dense_layers.extend(
+        self.cnn_layers = []
+        self.cnn_layers.extend(
             [
-                nn.Linear(in_dim, dense_dims[0]),
+                Conv2d(in_dim, cnn_dims[0], 3, 1, 1, True, True),
                 nn.GELU()
             ]
         )
-        for idx in range(len(dense_dims) - 1):
-            self.dense_layers.append(
-                nn.Linear(dense_dims[idx], dense_dims[idx + 1])
+        for idx in range(len(cnn_dims) - 1):
+            self.cnn_layers.append(
+                Conv2d(cnn_dims[idx], cnn_dims[idx + 1], 3, 1, 1, True, True),
             )
-            if idx == len(dense_dims) - 2:
+            if idx == len(cnn_dims) - 2:
                 if final_act == 'tanh':
-                    self.dense_layers.append(
+                    self.cnn_layers.append(
                         nn.Tanh()
                     )
                 elif final_act == 'GELU':
-                    self.dense_layers.append(
+                    self.cnn_layers.append(
                         nn.GELU()
                     )
             else:
-                self.dense_layers.append(
+                self.cnn_layers.append(
                     nn.GELU()
                 )
-        self.dense_layers = nn.Sequential(*self.dense_layers)
+        self.cnn_layers = nn.Sequential(*self.cnn_layers)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Map input vector through the MLP."""
-        x = self.dense_layers(x)
+        x = self.cnn_layers(x)
         return x

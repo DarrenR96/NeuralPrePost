@@ -5,12 +5,12 @@ stage_dims = [96, 192, 384, 768]
 
 [tap_enc_args]
 in_dim = 768
-dense_dims = [768, 768]
+cnn_dims = [768, 1]
 final_act = 'tanh'
 
 [tap_dec_args]
-in_dim = 768
-dense_dims = [768, 768]
+in_dim = 1
+cnn_dims = [1, 768]
 final_act = 'GELU'
 
 [post_processor_args]

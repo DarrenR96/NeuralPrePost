@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-
+from .conv2d import Conv2d
 
 class GlobalResponseNormalization(nn.Module):
     """Global response normalization (GRN) over spatial dimensions."""
@@ -60,22 +60,19 @@ class ConvNextStage(nn.Module):
 
 
 class ConvNextLayer(nn.Module):
-    """ConvNeXt encoder: stem, staged blocks, and global average pooling to a vector."""
+    """ConvNeXt encoder: stem, staged blocks"""
 
     def __init__(self, in_dim: int, num_blocks: int, stage_dims: list[int]) -> None:
         super().__init__()
-        self.encode_conv = nn.Conv2d(in_dim*2, stage_dims[0], 4, 4)
+        self.encode_conv = nn.Conv2d(in_dim, stage_dims[0], 4, 4)
         self.conv_stages = []
         for idx in range(len(stage_dims) - 1):
             self.conv_stages.append(ConvNextStage(num_blocks, stage_dims[idx]))
-            self.conv_stages.append(nn.Conv2d(stage_dims[idx], stage_dims[idx + 1], 2, 2))
+            self.conv_stages.append(Conv2d(stage_dims[idx], stage_dims[idx + 1], 2, 2, 0, True, True))
         self.conv_stages = nn.Sequential(*self.conv_stages)
-        self.average_pool = nn.AdaptiveAvgPool2d(1)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Encode input to a flattened feature vector."""
         x = self.encode_conv(x)
         x = self.conv_stages(x)
-        x = self.average_pool(x)
-        x = torch.flatten(x, 1)
         return x
