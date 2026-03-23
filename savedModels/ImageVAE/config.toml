@@ -1,0 +1,4 @@
+in_dims = 1
+num_blocks_per_stage = 3
+stage_dims = [16,32,64]
+encoded_dims = 16

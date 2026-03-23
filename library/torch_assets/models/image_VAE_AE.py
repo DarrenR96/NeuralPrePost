@@ -70,3 +70,8 @@ class ImageVAE(nn.Module):
         z = self.sampling(mu, log_var)
         x = self.decode(z)
         return x
+    
+    def forward_no_sampling(self, x):
+        mu, _ = self.encode(x)
+        x = self.decode(mu)
+        return x
