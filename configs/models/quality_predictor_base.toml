@@ -1,0 +1,4 @@
+in_dims = 16
+projection_dims = 24
+feature_dims = [48, 96, 192]
+dense_dims = [192, 96, 32]

@@ -1,3 +1,4 @@
 from .video_dataset import fetch_video_dataloaders
 from .hr_lr_dataset import HRLRDataset, fetch_hr_lr_dataloaders
 from .hr_patches_dataset import HRPatchesDataset, fetch_hr_patches_dataloaders
+from .qualiy_prediction_dataset import QualityPredictionDataset, fetch_qualtiy_prediction_dataloaders

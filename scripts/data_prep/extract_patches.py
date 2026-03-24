@@ -9,7 +9,7 @@ import uuid
 
 # Ensure project root is on path (Metaflow may run from a different cwd)
 _script_dir = os.path.dirname(os.path.abspath(__file__))
-_project_root = os.path.dirname(_script_dir)
+_project_root = os.path.dirname(os.path.dirname(_script_dir))
 if _project_root not in sys.path:
     sys.path.insert(0, _project_root)
 
